@@ -135,6 +135,13 @@ pub mod Icmpv6Types {
     pub const EchoRequest: Icmpv6Type = Icmpv6Type(128);
     /// ICMPv6 type for "echo reply".
     pub const EchoReply: Icmpv6Type = Icmpv6Type(129);
+    // Multicast Listener Discovery v1 [RFC2710]
+    /// Multicast Listener Query
+    pub const MulticastListenerQuery: Icmpv6Type = Icmpv6Type(130);
+    /// Version 1 Multicast Listener Report
+    pub const MulticastListenerReport: Icmpv6Type = Icmpv6Type(131);
+    /// Version 1 Multicast Listener Done
+    pub const MulticastListenerDone: Icmpv6Type = Icmpv6Type(132);
     // Neighbor Discovery Protocol [RFC4861]
     /// ICMPv6 type for "router solicitation".
     pub const RouterSolicit: Icmpv6Type = Icmpv6Type(133);
@@ -146,6 +153,8 @@ pub mod Icmpv6Types {
     pub const NeighborAdvert: Icmpv6Type = Icmpv6Type(136);
     /// ICMPv6 type for "redirect".
     pub const Redirect: Icmpv6Type = Icmpv6Type(137);
+    // Multicat Listener Discovery v2 [RFC3810]
+    pub const MulticastListenerReportv2: Icmpv6Type = Icmpv6Type(143);
 }
 
 pub mod ndp {
@@ -997,3 +1006,7 @@ pub mod echo_request {
         pub payload: Vec<u8>,
     }
 }
+
+pub mod mld {
+}
+
