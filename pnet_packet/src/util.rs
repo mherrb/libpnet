@@ -237,6 +237,7 @@ mod tests {
     }
 }
 
+/*
 #[cfg(all(test, feature = "benchmark"))]
 mod checksum_benchmarks {
     use super::checksum;
@@ -254,3 +255,4 @@ mod checksum_benchmarks {
         b.iter(|| checksum(black_box(&data), 5));
     }
 }
+*/
