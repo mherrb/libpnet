@@ -13,8 +13,6 @@ build = "build.rs"
 edition = "2021"
 
 [features]
-clippy = []
-nightly = []
 benchmark = []
 netmap = ["pnet_datalink/netmap_sys", "pnet_datalink/netmap"]
 pcap = ["pnet_datalink/pcap"]
