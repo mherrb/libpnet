@@ -1007,6 +1007,95 @@ pub mod echo6_request {
     }
 }
 
-pub mod mld {
-}
+pub mod mld_report {
+    //! Abstaction for MLDv2 reports
+    //! 0                   1                   2                   3
+    //! ```text
+    //!  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    //! +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    //! |  Type = 143   |      Code     |           Checksum            |
+    //! +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    //! |           Reserved            |Nr of Mcast Address Records (M)|
+    //! +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    //! |                                                               |
+    //! .                                                               .
+    //! .                  Multicast Address Record [1]                 .
+    //! .                                                               .
+    //! |                                                               |
+    //! +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    //! ...
+    //! +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    //! |  Record Type  |  Aux Data Len |     Number of Sources (N)     |
+    //! +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    //! |                                                               |
+    //! *                                                               *
+    //! |                                                               |
+    //! *                       Multicast Address                       *
+    //! |                                                               |
+    //! *                                                               *
+    //! |                                                               |
+    //! +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    //! |                                                               |
+    //! *                                                               *
+    //! |                                                               |
+    //! *                       Source Address [1]                      *
+    //! |                                                               |
+    //! *                                                               *
+    //! |                                                               |
+    //! +-                                                             -+
+    //! ...                                                             |
+    //! ```
+    //use crate::PrimitiveValues;
+    use crate::icmpv6::{Icmpv6Code, Icmpv6Type};
 
+    use alloc::vec::Vec;
+    use core::net::Ipv6Addr;
+
+    use pnet_macros::packet;
+    use pnet_macros_support::types::*;
+
+    /// Represents a multicast address record in a MLDv2 request
+    #[packet]
+    pub struct MulticastAddressRecord {
+        #[construct_with(u8)]
+        pub record_type: u8,
+        pub aux_data_len: u8,
+        pub number_of_sources: u16be,
+        #[construct_with(u16, u16, u16, u16, u16, u16, u16, u16)]
+        pub multicast_address: Ipv6Addr,
+        #[construct_with(u16, u16, u16, u16, u16, u16, u16, u16)]
+        pub source_address: Ipv6Addr,
+        #[length = "0"]
+        #[payload]
+        pub payload: Vec<u8>
+    }
+    /// Represents an "MLD Report V2 packet
+    #[packet]
+    pub struct MldReportV2 {
+        #[construct_with(u8)]
+        pub icmpv6_type: Icmpv6Type,
+        #[construct_with(u8)]
+        pub icmpv6_code: Icmpv6Code,
+        pub checksum: u16be,
+        pub reserved: u16be,
+        pub number_of_records: u16be,
+        pub record_type: u8,
+        pub aux_data_len: u8,
+        pub number_of_sources: u16be,
+        #[construct_with(u16, u16, u16, u16, u16, u16, u16, u16)]
+        pub multicast_address: Ipv6Addr,
+        // #[construct_with(u16, u16, u16, u16, u16, u16, u16, u16)]
+        // pub source_address: Ipv6Addr,
+        // #[length_fn = "mld_report_length"]
+        #[length = "0"]
+        #[payload]
+        pub payload: Vec<u8>
+    }
+    //fn multicast_address_record_length(rec: &MulticastAddressRecordPacket) -> usize {
+    //    rec.get_number_of_sources() as usize * 16
+    //        + rec.get_aux_data_len() as usize
+    //}
+    //fn mld_report_length(_req: &MldReportV2Packet) -> usize {
+    //    52 // XXX
+    //}
+}
