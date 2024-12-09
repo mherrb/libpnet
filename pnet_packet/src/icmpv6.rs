@@ -1057,14 +1057,13 @@ pub mod mld_report {
     /// Represents a multicast address record in a MLDv2 request
     #[packet]
     pub struct MulticastAddressRecord {
-        #[construct_with(u8)]
         pub record_type: u8,
         pub aux_data_len: u8,
         pub number_of_sources: u16be,
         #[construct_with(u16, u16, u16, u16, u16, u16, u16, u16)]
         pub multicast_address: Ipv6Addr,
-        #[construct_with(u16, u16, u16, u16, u16, u16, u16, u16)]
-        pub source_address: Ipv6Addr,
+        // #[construct_with(u16, u16, u16, u16, u16, u16, u16, u16)]
+        // pub source_address: Ipv6Addr,
         #[length = "0"]
         #[payload]
         pub payload: Vec<u8>
@@ -1079,14 +1078,8 @@ pub mod mld_report {
         pub checksum: u16be,
         pub reserved: u16be,
         pub number_of_records: u16be,
-        pub record_type: u8,
-        pub aux_data_len: u8,
-        pub number_of_sources: u16be,
-        #[construct_with(u16, u16, u16, u16, u16, u16, u16, u16)]
-        pub multicast_address: Ipv6Addr,
-        // #[construct_with(u16, u16, u16, u16, u16, u16, u16, u16)]
-        // pub source_address: Ipv6Addr,
-        // #[length_fn = "mld_report_length"]
+        #[length = "20"]
+        pub multicast_address_record: Vec<MulticastAddressRecord>,
         #[length = "0"]
         #[payload]
         pub payload: Vec<u8>
