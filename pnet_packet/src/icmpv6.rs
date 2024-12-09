@@ -843,7 +843,7 @@ pub mod ndp {
     }
 }
 
-pub mod echo_reply {
+pub mod echo6_reply {
     //! abstraction for "echo reply" ICMPv6 packets.
     //!
     //! ```text
@@ -925,7 +925,7 @@ pub mod echo_reply {
     }
 }
 
-pub mod echo_request {
+pub mod echo6_request {
     //! abstraction for "echo request" ICMPv6 packets.
     //!
     //! ```text
